@@ -1,0 +1,60 @@
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	<div class="row">
+	<div class="col-md-2"></div>
+	<div class="col-md-8">	
+	<br>
+	<div class="card bg-light">
+	  <div class="card-header">
+
+	  </div>
+	  <div class="card-body">
+	    <h5 class="card-title"><p><%=list.titulo%></p></h5>
+	    <p class="card-text"><p><%=list.descripcion%></p></p>
+	    <div>
+	    <a href="/user" class="btn btn-primary">Volver</a><footer class="blockquote-footer"><p><%=list.fecha%></p></footer>
+		</div>
+	  </div>
+	</div>
+	<br>
+	<div class="row">
+	<div class="col-md-10"><h3>Comentarios</h3></div>
+	<div class="col-md-2"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" data-whatever="@fat">Add</button></div>
+
+	</div>
+	<% list.comentarios.forEach(function(item){%>
+
+	<div class="card bg-light">
+	  <div class="card-header">
+
+	  </div>
+	  <div class="card-body">
+	    <h5 class="card-title"><p><%=item.autor%></p></h5>
+	    <p class="card-text"><p><%=item.mensaje%></p></p>
+	  	<p class="card-text"><p><%=item.fecha%></p>
+	  </div>
+
+	</div>
+	<%})%>
+	<br>
+	<div>
+	<div class="col-md-2"></div>
+	</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+    <div class="modal-header">
+    	<h5>Agregar Comentario</h5>
+    </div>	
+    <div class="modal-body">
+	<form action="/user/addcomment" method="post">
+		<input type="hidden" name="id" value="<%=list.id%>">
+		Autor: <input type="text" class="form-control" name="txtAutor"><br>
+		Mensaje: <input type="text" class="form-control" name="txtMensaje"><br>
+		<input type="submit" value="Agregar" class="btn btn-primary">
+	</form><br>
+	</div>	
+</div></div>
+</div>

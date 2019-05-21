@@ -1,0 +1,132 @@
+	
+	<p><input type="Button" id="btnNuevo" value="Nuevo" class="btn btn-primary"></p>
+    <table class="table" id="dataTable">
+    	<thead>
+    		<tr>
+	    	  <th>Titulo</th>
+	    	  <th>Descripcion</th>
+	    	  <th>Categoria</th>
+	    	  <th>Fecha</th>
+	    	  <th colspan="2">accion</th>
+	    	</tr>
+  		</thead>
+    </table>
+
+<!-- Modal-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        
+        <h4 class="modal-title" id="myModalLabel">Nuevo</h4>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+
+      <div class="modal-body">
+        <form class="form-horizontal">
+        	<input id="id" type="hidden" value=""/>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="inputTitulo">Titulo</label>
+            <div class="col-sm-10">
+              <input class="form-control" id="inputTitulo" type="text" placeholder="Titulo"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="inputDescripcion">Descripcion</label>
+            <div class="col-sm-10">
+              <input class="form-control" id="inputDescripcion" type="text" placeholder="Descripcion"/>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="inputCategoria">Categoria</label>
+            <div class="col-sm-10">
+              <input class="form-control" id="inputCategoria" type="text" placeholder="Categoria"/>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="inputFecha">Fecha</label>
+            <div class="col-sm-10">
+              <input class="form-control" id="inputFecha" type="date"/>
+            </div>
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-default" type="button" data-dismiss="modal">Cancelar</button>
+        <button class="btn btn-primary btnGuardar" type="button">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+  $('#btnNuevo').click(function(){
+  	$('#myModal').modal('show');
+  });
+
+  $('.btnGuardar').click(function(){
+  	datos={
+  		titulo: $('#inputTitulo').val(),
+  		descripcion: $('#inputDescripcion').val(),
+  		categoria: $('#inputCategoria').val(),
+  		fecha: $('#inputFecha').val()
+  	};
+
+  	val_id = $('#id').val();
+  	if(val_id ==''){
+  		ruta='news/crear'
+  	}else{
+  		ruta='news/actualizar';
+  		datos.id=val_id;
+  	}
+
+  	$.post(ruta,datos,function(){
+  		$('#id').val('');
+  		$('#inputTitulo').val('');
+  		$('#inputCategoria').val('');
+  		$('#inputDescripcion').val('');
+  		$('#inputFecha').val('');
+  		$('#myModal').modal('hide');
+  		$('#dataTable').DataTable().ajax.reload();
+  	});
+  });
+
+  $('#dataTable').DataTable({
+    "processing": true,
+    "ajax": {
+        url: 'news/listar',
+		dataSrc: ""
+    },
+    "columns": [
+      		{"data":"titulo"},
+      		{"data":"descripcion"},
+      		{"data":"categoria"},
+			{"data":"fecha"},
+			{"data":null,
+				render: function(data,type,row,meta){
+					html = "<td><a class='btn btn-primary btnEditar' data-id='"+data._id+"'><i class='fa fa-pencil-alt'></i></td>";
+					html += "<td><a class='btn btn-danger btnEliminar' href='/news/eliminar/"+data._id+"'><i class='fa fa-trash-alt'></i></td>";
+					return html;
+				}
+			}
+    ]
+  });
+    $('#dataTable').on('click','.btnEditar',function(){
+  	val_id=$(this).data('id');
+  	$.get('news/detalle/'+val_id,function(data){
+  		$('#id').val(data._id);
+  		$('#inputTitulo').val(data.titulo);
+  		$('#inputCategoria').val(data.categoria);
+  		$('#inputDescripcion').val(data.descripcion);
+  		$('#inputFecha').val(data.fecha);
+  		$('#myModal').modal('show');
+  	});
+  });
+
+});
+</script>

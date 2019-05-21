@@ -1,0 +1,22 @@
+	<div class="row">
+	<div class="col-md-2"></div>
+	<div class="col-md-8">	
+	<br>
+	<% lista.forEach(function(item){%>
+	<div class="card bg-light">
+	  <div class="card-header">
+
+	  </div>
+	  <div class="card-body">
+	    <h5 class="card-title"><p><%=item.titulo%></p></h5>
+	    <p class="card-text"><p><%=item.descripcion%></p></p>
+	    <div>
+	    <a href="user/detalle/<%=item.id%>" class="btn btn-primary">Ver más</a><footer class="blockquote-footer"><p><%=item.fecha%></p></footer>
+		</div>
+	  </div>
+	</div>
+	<br>
+	<%})%>
+	<div>
+	<div class="col-md-2"></div>
+	</div>

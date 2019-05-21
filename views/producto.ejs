@@ -1,0 +1,25 @@
+<table class="table" id="dataTable">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Precio</th>
+      <th>Categoría</th>
+    </tr>
+  </thead>
+</table>
+<script>
+$(document).ready(function() {
+  $('#dataTable').DataTable({
+    "processing": true,
+    "ajax": {
+        url:  'http://localhost:3000/producto/listar',
+        dataSrc: ""
+    },
+    "columns": [
+      { "data": "nombre" },
+      { "data": "precio" },
+      { "data": "categoria_id.nombre" },
+    ]
+  });
+});
+</script>
